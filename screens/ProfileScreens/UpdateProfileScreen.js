@@ -18,7 +18,6 @@ import { confirmationAlert } from "../../utils/helperFunctions";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 const UpdateProfileScreen = ({ navigation }) => {
   const [isLoading, setIsLoading] = useState(true);
-  // const [emirates, setEmirates] = useState();
 
   const [selectedEmirate, setSelectedEmirate] = useState();
   const [enteredFirstName, setEnteredFirstName] = useState("");

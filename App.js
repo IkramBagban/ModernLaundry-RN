@@ -26,6 +26,7 @@ import EnterEmail from "./screens/auth/EnterEmail";
 import OTPVarificationScreen from "./screens/auth/OTPVarificationScreen";
 import ForgotPasswordScreen from "./screens/auth/ForgotPasswordScreen";
 import FlashMessage from "react-native-flash-message";
+import ChatScreen from "./screens/chat/ChatScreen";
 
 const Stack = createNativeStackNavigator();
 const Bottom = createBottomTabNavigator();
@@ -72,6 +73,17 @@ function AuthenticatedStack() {
           tabBarLabelStyle: { fontFamily: MyFonts.fontregular },
           tabBarIcon: ({ color, size }) => (
             <MaterialIcons name="list-alt" color={color} size={26} />
+          ),
+        }}
+      />
+      <Bottom.Screen
+        name="ChatScreen"
+        component={ChatScreen}
+        options={{
+          tabBarLabel: "Chat",
+          tabBarLabelStyle: { fontFamily: MyFonts.fontregular },
+          tabBarIcon: ({ color, size }) => (
+            <MaterialIcons name="chat" color={color} size={26} />
           ),
         }}
       />

@@ -131,7 +131,7 @@ const LoginAsGuest = ({ navigation }) => {
     <View style={styles.rootContainer}>
       <Title text="Login As Guest" size={35} />
       <View style={styles.container}>
-        <Input
+        <In put
           label="Email Address"
           onUpdateValue={updateInputValueHandler.bind(this, "email")}
           value={enteredEmail}
