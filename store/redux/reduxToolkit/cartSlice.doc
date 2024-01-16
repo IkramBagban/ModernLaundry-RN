@@ -1,0 +1,39 @@
+================= cartSlice.js =================
+cartSlice.js is a Redux slice that manages the state of the app. It uses the createSlice function from the Redux Toolkit library to create a slice of the Redux store for managing the cart state. The initial state of the cart is an object with a single property products, which is an empty array.
+
+
+================= Reducer functions =================
+The slice includes several reducer functions for updating the cart state:
+
+1) addToCart: adds a new product to the cart.
+
+2) removeFromCart: removes a product from the cart by its id.
+
+3) updateCartItemQuantity: updates the quantity of a product in the cart by its id.
+
+4) updateItemServiceType: updates the service type and price of a product in the cart by its id.
+
+5) updateItemDelivery: updates the delivery type of a product in the cart by its id.
+
+6) updateDeliveryType: updates the delivery type and service price of a product in the cart by its id.
+
+
+================= Selectors =================
+
+The slice also exports several selectors for accessing data from the cart state:
+
+1) selectCart: selects the entire cart state.
+
+2) selectAllCartItems: selects all products in the cart.
+
+3) selectCartItemById: selects a specific product in the cart by its id.
+
+4) selectCartTotalPrice: calculates and selects the total price of all products in the cart.
+
+5) selectCartTotalQuantity: calculates and selects the total quantity of all products in the cart.
+
+6) selectItemTotalPrice: calculates and selects the total price of a specific product in the cart by its id.
+
+
+================= Usage =================
+To use this slice, you can import it into your Redux store. You can then dispatch actions to update the cart state and use selectors to access data from it.

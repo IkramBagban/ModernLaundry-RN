@@ -1,0 +1,37 @@
+{
+  "migIndex": 1,
+  "data": [
+    {
+      "path": "assets/fonts/ARIAL.TTF",
+      "sha1": "66154062e9902d6664f9855bfc04138e8b0c7c53"
+    },
+    {
+      "path": "assets/fonts/OpenSans-Bold.ttf",
+      "sha1": "c23ede86996d8239865bcd04c806e3789aaa0b94"
+    },
+    {
+      "path": "assets/fonts/OpenSans-Light.ttf",
+      "sha1": "448dbc1e8add1538f788c9e34cdb701ed25ac993"
+    },
+    {
+      "path": "assets/fonts/OpenSans-Medium.ttf",
+      "sha1": "f886dd439250f2a8a7326f3f6b433adf34c96fe8"
+    },
+    {
+      "path": "assets/fonts/OpenSans-Regular.ttf",
+      "sha1": "9a19a459ca7bca15d2de8269b80411f2b4a71ccf"
+    },
+    {
+      "path": "assets/fonts/RobotoSlab-Bold.ttf",
+      "sha1": "7bfea10c4050e0bce05c56d9d303788773430fa3"
+    },
+    {
+      "path": "assets/fonts/RobotoSlab-Medium.ttf",
+      "sha1": "ef9abee58409c5ad6191ab528b2d1f753462f166"
+    },
+    {
+      "path": "assets/fonts/RobotoSlab-Regular.ttf",
+      "sha1": "40da9134dfa586bc4b6c62b6540269d3d497f480"
+    }
+  ]
+}
