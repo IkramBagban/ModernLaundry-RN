@@ -14,6 +14,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import {
+  ChatScreenNavigator,
   HomeScreenNavigator,
   OrderScreenNavigator,
   ProfileScreenNavigator,
@@ -78,7 +79,8 @@ function AuthenticatedStack() {
       />
       <Bottom.Screen
         name="ChatScreen"
-        component={ChatScreen}
+        // component={ChatScreen}
+        component={ChatScreenNavigator}
         options={{
           tabBarLabel: "Chat",
           tabBarLabelStyle: { fontFamily: MyFonts.fontregular },

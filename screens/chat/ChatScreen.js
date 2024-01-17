@@ -6,11 +6,15 @@ import {
   Pressable,
   FlatList,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import { ColorPalate, MyFonts } from "../../constants/var";
 import Input from "../../components/Auth/Input";
+import { useSelector } from "react-redux";
+import io from 'socket.io-client';
+import { API_URL } from "../../config";
+import axios from "axios";
 
 const messageData = [
   { _id: 1, message: "Hi there!", msgBy: "user", time: "3:00" },
@@ -167,19 +171,87 @@ const messageData = [
 ];
 
 const ChatScreen = () => {
+  // const [input, setInput] = useState("");
+
+  // const [messages, setMessages] = useState(messageData);
+  // const sendMessageHandler = () => {
+  //   console.log("send msg button clicked");
+  //   const data = {
+  //     _id: messages.length,
+  //     msgBy: "support",
+  //     message: input,
+  //     time: "2:45",
+  //   };
+  //   setMessages((prev) => [...prev, data]);
+  //   console.log(messages);
+  //   setInput("");
+  // };
+  const currentCustomer = useSelector(
+    (state) => state?.filteredData?.currentCustomerData
+  );
+
+  const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
-  const [messages, setMessages] = useState(messageData);
-  const sendMessageHandler = () => {
-    console.log("send msg button clicked");
-    const data = {
-      _id: messages.length,
-      msgBy: "support",
-      message: input,
-      time: "2:45",
+  const [socket, setSocket] = useState(null);
+  const [senderId, setsenderId] = useState(currentCustomer?._id );
+  const [recipient, setRecipient] = useState("65a3971a31488ce57038aebc");
+  const [name, setName] = useState(currentCustomer?.first_name);
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const response = await axios.get(
+          API_URL + "/message/" + senderId
+        );
+        console.log("response", response.data.data);
+        setMessages(response.data.data);
+      } catch (e) {
+        console.log(e.message);
+      }
+    }
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    // Initialize socket connection
+    const newSocket = io(API_URL);
+    setSocket(newSocket);
+
+    // Event listeners
+    newSocket.on("message_received", (newMessage) => {
+      setMessages((prevMessages) => [...prevMessages, newMessage]);
+    });
+
+    // Clean up on component unmount
+    return () => {
+      newSocket.disconnect();
     };
-    setMessages((prev) => [...prev, data]);
-    console.log(messages);
-    setInput("");
+  }, []);
+
+  // Fetch user details from localStorage inside useEffect to avoid null values
+  useEffect(() => {
+    if (socket && senderId) {
+      // Register the user with their customer ID
+      socket.emit("register_user", senderId);
+    }
+
+    // Add other socket.emit or socket.on events here as needed
+  }, [socket]); // Dependency array ensures this effect runs when socket is set
+
+  const sendMessageHandler = () => {
+    if (socket) {
+      const messageData = {
+        message: input,
+        senderId: senderId,
+        recipient: recipient,
+        name: name,
+      };
+
+      socket.emit("new_message", messageData);
+      setInput("");
+    } else {
+      console.error("Socket not connected");
+    }
   };
 
   const inputChangeHandler = (value) => {
@@ -187,9 +259,9 @@ const ChatScreen = () => {
   };
   return (
     <View style={{ height: "100%", backgroundColor: ColorPalate.lgrey }}>
-      <View style={styles.supportTextContainer}>
+      {/* <View style={styles.supportTextContainer}>
         <Text style={styles.supportText}>support</Text>
-      </View>
+      </View> */}
 
       <View style={styles.messagesContainer}>
         <FlatList
@@ -202,7 +274,7 @@ const ChatScreen = () => {
                     styles.userMessage,
                     {
                       alignSelf:
-                        item.msgBy === "user" ? "flex-end" : "flex-start",
+                        item.senderId === currentCustomer?._id ? "flex-end" : "flex-start",
                     },
                   ]}
                 >
@@ -266,9 +338,9 @@ const styles = StyleSheet.create({
   },
   messagesContainer: {
     flex: 1,
-    paddingHorizontal: 10,
+    // paddingHorizontal: 10,
     marginBottom: 55,
-    paddingTop: 10,
+    // paddingTop: 10,
   },
   userMessageContainer: {
     marginVertical: 5,
@@ -285,21 +357,20 @@ const styles = StyleSheet.create({
     marginHorizontal: 5,
     maxWidth: "80%",
     alignSelf: "flex-start",
-    
-    fontFamily : MyFonts.fontregular
+
+    fontFamily: MyFonts.fontregular,
   },
   chatInput: {
     flex: 1,
     borderColor: ColorPalate.themeprimary,
     padding: 10,
     color: ColorPalate.dgrey,
-    backgroundColor: '#e6e6e6',
+    backgroundColor: "#e6e6e6",
     // borderRadius: 10,
     // borderWidth: 1,
     // marginRight: 5,
     maxHeight: 100,
-    fontFamily : MyFonts.fontregular,
-    
+    fontFamily: MyFonts.fontregular,
   },
   inputContainer: {
     flexDirection: "row",
@@ -323,56 +394,3 @@ const styles = StyleSheet.create({
     color: ColorPalate.themeprimary,
   },
 });
-
-// const styles = StyleSheet.create({
-//     supportTextContainer:{
-//         // borderWidth : 1,
-//         backgroundColor : ColorPalate.white,
-//         elevation : 9,
-//         // marginBottom : 10
-
-//     },
-//     supportText:{
-//         color : ColorPalate.themeprimary,
-//         fontSize : 24,
-//         fontFamily : MyFonts.fontbold,
-//         alignSelf : "center",
-//         padding  : 10
-//     },
-//   messagesContainer: {
-//     // marginTop: 30,
-//     // marginBottom : 60
-//   },
-//   userMessageContainer: {
-//     elevation : 9,
-//     display: "flex",
-//     // justifyContent : 'flex-end',
-//     position: "relative",
-//     top: 1,
-//     right: 1,
-//     // borderWidth:1,
-//     // alignItems :'flex-end'
-//   },
-//   userMessage: {
-//     borderWidth: 1,
-//     color: ColorPalate.themeprimary,
-//     backgroundColor : ColorPalate.white,
-//     padding: 3,
-//     margin: 3,
-//   },
-//   chatInput: {
-//     // borderWidth : 1,
-//     borderColor: ColorPalate.themeprimary,
-//     padding: 5,
-//     width: "90%",
-//     color: "black",
-//     backgroundColor: "white",
-//     maxHeight: 100,
-//   },
-//   inputContainer: {},
-//   text: {
-//     borderColor: ColorPalate.themeprimary,
-//     paddingLeft: 8,
-//     borderLeftWidth: 1,
-//   },
-// });

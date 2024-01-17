@@ -9,6 +9,8 @@ import { ColorPalate, MyFonts } from "./constants/var";
 import ProfileScreen from "./screens/ProfileScreens/Profile";
 import UpdateProfileScreen from "./screens/ProfileScreens/UpdateProfileScreen";
 import ThanksScreen from "./screens/HomeScreens/ThanksScreen";
+import ChatScreen from "./screens/chat/ChatScreen";
+import ChatMainScreen from "./screens/chat/ChatMainScreen";
 
 
 const Stack = createNativeStackNavigator();
@@ -86,6 +88,32 @@ const OrderScreenNavigator = () => {
   );
 };
 
+const ChatScreenNavigator = () => {
+  return (
+    <Stack.Navigator
+      screenOptions={{
+        headerTitleStyle: {
+          color: ColorPalate.themeprimary,
+          fontFamily: MyFonts.fontbold,
+          fontSize: 18,
+        },
+      }}
+    >
+      <Stack.Screen name="ChatMain" options={{
+        headerTitle : "Chats"
+      }} component={ChatMainScreen} />
+      <Stack.Screen name="Chat" options={{
+        headerTitle : "Chat"
+      }} component={ChatScreen} />
+      {/* <Stack.Screen
+        name="OrderDetails"
+        component={OrderDetailsScreen}
+        options={{ title: "Order Details" }}
+      /> */}
+    </Stack.Navigator>
+  );
+};
+
 const ProfileScreenNavigator = () => {
   return (
     <Stack.Navigator
@@ -113,4 +141,4 @@ const ProfileScreenNavigator = () => {
   );
 };
 
-export { HomeScreenNavigator, OrderScreenNavigator, ProfileScreenNavigator };
+export { HomeScreenNavigator, OrderScreenNavigator, ProfileScreenNavigator ,ChatScreenNavigator};
