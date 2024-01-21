@@ -5,6 +5,7 @@ import {
   StyleSheet,
   Pressable,
   FlatList,
+  ActivityIndicator,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 
@@ -12,7 +13,7 @@ import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import { ColorPalate, MyFonts } from "../../constants/var";
 import Input from "../../components/Auth/Input";
 import { useSelector } from "react-redux";
-import io from 'socket.io-client';
+import io from "socket.io-client";
 import { API_URL } from "../../config";
 import axios from "axios";
 import useMessages from "../../components/customHooks/useMessages";
@@ -171,27 +172,40 @@ const messageData = [
   },
 ];
 
-const ChatScreen = () => {
+const AdminChat = ({ route }) => {
   const currentCustomer = useSelector(
     (state) => state?.filteredData?.currentCustomerData
   );
 
+  const recipient = route.params.recipient;
+  const senderId = route.params.senderId;
+  const rname = route.params.name;
+  // console.log('recip', r)
+  console.log("name", rname);
+
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
   const [socket, setSocket] = useState(null);
-  const [senderId, setsenderId] = useState(currentCustomer?._id );
-
-  // 'ikrambagban471@gmail.com
-  const [recipient, setRecipient] = useState("65a66a02247e626af832b320");
+//   const [senderId, setsenderId] = useState(currentCustomer?._id);
+  // const [recipient, setRecipient] = useState("65a3971a31488ce57038aebc");
   const [name, setName] = useState(currentCustomer?.first_name);
 
-      const [msges, isLoading] = useMessages();
+  const [msges, isLoading] = useMessages();
 
-    useEffect(() => {
-    setMessages(msges)
-    }, [msges]);
+  useEffect(() => {
+    if (!msges) return;
 
-
+    console.log("senderid", senderId);
+    console.log("recipient", recipient);
+    const chatWithRecipientUser = msges.filter(
+      (m) =>
+        (m.senderId == senderId && m.recipient == recipient) ||
+        (m.senderId == recipient && m.recipient == senderId)
+    );
+    // console.log("chatwith", chatWithRecipientUser);
+    setMessages(chatWithRecipientUser);
+    // setMessages(msges);
+  }, [msges]);
 
   useEffect(() => {
     // Initialize socket connection
@@ -238,33 +252,59 @@ const ChatScreen = () => {
   const inputChangeHandler = (value) => {
     setInput(value);
   };
+
+  console.log(isLoading);
+  if (isLoading) {
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <ActivityIndicator size="large" color={ColorPalate.themeprimary} />
+      </View>
+    );
+  }
+  //   if (messages.length < 1) {
+  //     return (
+  //       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+  //         <Text>No message Found.</Text>
+  //       </View>
+  //     );
+  //   }
   return (
     <View style={{ height: "100%", backgroundColor: ColorPalate.lgrey }}>
       {/* <View style={styles.supportTextContainer}>
-        <Text style={styles.supportText}>support</Text>
-      </View> */}
-
+          <Text style={styles.supportText}>support</Text>
+        </View> */}
+      <Text style={{ color: "black" }}>{rname}</Text>
       <View style={styles.messagesContainer}>
-        <FlatList
-          data={messages}
-          renderItem={({ item }) => {
-            return (
-              <View style={styles.userMessageContainer}>
-                <Text
-                  style={[
-                    styles.userMessage,
-                    {
-                      alignSelf:
-                        item.senderId === currentCustomer?._id ? "flex-end" : "flex-start",
-                    },
-                  ]}
-                >
-                  {item.message}
-                </Text>
-              </View>
-            );
-          }}
-        />
+        {messages.length < 1 ? (
+          <View
+            style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+          >
+            <Text>No message Found.</Text>
+          </View>
+        ) : (
+          <FlatList
+            data={messages}
+            renderItem={({ item }) => {
+              return (
+                <View style={styles.userMessageContainer}>
+                  <Text
+                    style={[
+                      styles.userMessage,
+                      {
+                        alignSelf:
+                          item.senderId === currentCustomer?._id
+                            ? "flex-end"
+                            : "flex-start",
+                      },
+                    ]}
+                  >
+                    {item.message}
+                  </Text>
+                </View>
+              );
+            }}
+          />
+        )}
       </View>
 
       <View
@@ -303,7 +343,7 @@ const ChatScreen = () => {
   );
 };
 
-export default ChatScreen;
+export default AdminChat;
 const styles = StyleSheet.create({
   supportTextContainer: {
     backgroundColor: ColorPalate.white,

@@ -11,11 +11,10 @@ import UpdateProfileScreen from "./screens/ProfileScreens/UpdateProfileScreen";
 import ThanksScreen from "./screens/HomeScreens/ThanksScreen";
 import ChatScreen from "./screens/chat/ChatScreen";
 import ChatMainScreen from "./screens/chat/ChatMainScreen";
-
+import AdminChat from "./screens/chat/AdminChat";
 
 const Stack = createNativeStackNavigator();
 const HomeScreenNavigator = () => {
-  
   return (
     <>
       <Stack.Navigator
@@ -56,12 +55,11 @@ const HomeScreenNavigator = () => {
           component={ThanksScreen}
           options={{ headerShown: false }}
         />
-          <Stack.Screen
-        name="UpdateProfile"
-        component={UpdateProfileScreen}
-        options={{ title: "Update Profile" }}
-      />
-
+        <Stack.Screen
+          name="UpdateProfile"
+          component={UpdateProfileScreen}
+          options={{ title: "Update Profile" }}
+        />
       </Stack.Navigator>
     </>
   );
@@ -99,12 +97,30 @@ const ChatScreenNavigator = () => {
         },
       }}
     >
-      <Stack.Screen name="ChatMain" options={{
-        headerTitle : "Chats"
-      }} component={ChatMainScreen} />
-      <Stack.Screen name="Chat" options={{
-        headerTitle : "Chat"
-      }} component={ChatScreen} />
+      <Stack.Screen
+        name="ChatMain"
+        options={{
+          headerTitle: "Chats",
+        }}
+        component={ChatMainScreen}
+      />
+      <Stack.Screen
+        name="Chat"
+        options={{
+          headerTitle: "Chat",
+        }}
+        component={ChatScreen}
+      />
+      <Stack.Screen
+        name="AdminChat"
+        // options={{
+        //   headerTitle: "Chat",
+        // }}
+        options={({route}) => ({
+          headerTitle: route.params.name || "Guest",
+        })}
+        component={AdminChat}
+      />
       {/* <Stack.Screen
         name="OrderDetails"
         component={OrderDetailsScreen}
@@ -141,4 +157,9 @@ const ProfileScreenNavigator = () => {
   );
 };
 
-export { HomeScreenNavigator, OrderScreenNavigator, ProfileScreenNavigator ,ChatScreenNavigator};
+export {
+  HomeScreenNavigator,
+  OrderScreenNavigator,
+  ProfileScreenNavigator,
+  ChatScreenNavigator,
+};
