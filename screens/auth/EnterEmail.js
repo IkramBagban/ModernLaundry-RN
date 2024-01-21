@@ -5,9 +5,9 @@ import { useState } from "react";
 import { ColorPalate } from "../../constants/var";
 import MyGradientButton from "../../components/MyGradientButton";
 import commonStyle from "./commonStyle";
-import {  postSendOtp } from "../../utils/api";
+import { postSendOtp } from "../../utils/api";
 import { showMessage } from "react-native-flash-message";
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 
 const EnterEmail = ({ navigation }) => {
   const [EnteredEmail, setEnteredEmail] = useState("");
@@ -18,30 +18,30 @@ const EnterEmail = ({ navigation }) => {
       //   (customer) => customer.email === EnteredEmail
       // );
 
-      const response = await postSendOtp(EnteredEmail)
-    console.log("response :", response.data);
+      const response = await postSendOtp(EnteredEmail);
+      console.log("response :", response.data);
 
-      console.log('response status : ', response.status)
+      console.log("response status : ", response.status);
 
-      if(response.status === 404){
+      if (response.status === 404) {
         showMessage({
           message: "Incorrect Email",
           description: "Pleas Enter Correct Email",
-          icon:()=><MaterialIcons name="error" size={24} color="white" />,
+          icon: () => <MaterialIcons name="error" size={24} color="white" />,
           type: "danger",
         });
         return;
       }
 
       if (response.status === 200) {
-        navigation.navigate("OTPVarify", { email : EnteredEmail });
+        navigation.navigate("OTPVarify", { email: EnteredEmail });
         // console.log("exist email")
-      } else {  
+      } else {
         // Alert.alert("Incorrect Email", "Pleas Enter Correct Email");
         showMessage({
           message: "Incorrect Email",
           description: "Pleas Enter Correct Email",
-          icon:()=><MaterialIcons name="error" size={24} color="white" />,
+          icon: () => <MaterialIcons name="error" size={24} color="white" />,
           type: "danger",
         });
       }
@@ -49,7 +49,7 @@ const EnterEmail = ({ navigation }) => {
       showMessage({
         message: "OTP Failed",
         description: "send otp Failed.",
-        icon:()=><MaterialIcons name="error" size={24} color="white" />,
+        icon: () => <MaterialIcons name="error" size={24} color="white" />,
         type: "danger",
       });
       console.log("got an error while checking email is valid or not. -->", e);
@@ -73,7 +73,14 @@ const EnterEmail = ({ navigation }) => {
       </View>
       <View style={commonStyle.buttonContainer}>
         <MyGradientButton onPressBtn={varifyEmailHandler} title="Send OTP" />
-        <Pressable onPress={() => navigation.navigate("SignIn")}>
+        <Pressable
+          onPress={() => navigation.navigate("SignIn")}
+          style={({ pressed }) => [
+            {
+              opacity: pressed ? 0.7 : 1,
+            },
+          ]}
+        >
           <Text
             style={[
               commonStyle.text,
