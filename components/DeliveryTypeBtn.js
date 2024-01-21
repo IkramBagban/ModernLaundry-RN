@@ -1,20 +1,26 @@
-  import React, { useEffect, useState } from 'react';
-import { View, Text, Pressable, StyleSheet } from 'react-native';
-import { getDeliveryTypes } from '../utils/api';
-import { useDispatch, useSelector } from 'react-redux';
-import { getTotal, selectAllCartItems, selectCartTotalPrice, updateDates, updateDeliveryType } from '../store/redux/reduxToolkit/cartSlice';
-import { ColorPalate, MyFonts } from '../constants/var';
+import React, { useEffect, useState } from "react";
+import { View, Text, Pressable, StyleSheet } from "react-native";
+import { getDeliveryTypes } from "../utils/api";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  getTotal,
+  selectAllCartItems,
+  selectCartTotalPrice,
+  updateDates,
+  updateDeliveryType,
+} from "../store/redux/reduxToolkit/cartSlice";
+import { ColorPalate, MyFonts } from "../constants/var";
 const deliveryTypes = [
-  { "deliveryTypeID": "1", "delivery_type": "Standard" },
-  { "deliveryTypeID": "2", "delivery_type": "Express" },
-  { "deliveryTypeID": "3", "delivery_type": "Same Day" }
-]
+  { deliveryTypeID: "1", delivery_type: "Standard" },
+  { deliveryTypeID: "2", delivery_type: "Express" },
+  { deliveryTypeID: "3", delivery_type: "Same Day" },
+];
 const DeliveryTypeBtn = () => {
   // const [deliveryTypes, setDeliveryTypes] = useState();
 
   const cartItems = useSelector((state) => state.cart.products);
 
-  const [selectedType, setSelectedType] = useState('1');
+  const [selectedType, setSelectedType] = useState("1");
   const [products] = useState(cartItems);
 
   const dispatch = useDispatch();
@@ -22,15 +28,15 @@ const DeliveryTypeBtn = () => {
   useEffect(() => {
     // Iterate over each product
     products.forEach((product) => {
-
       // Filter the pricing array based on selectedType, service type, and emirate_id
-      const filteredPricingArray = product.cartItem.pricing.filter(
-        (price) =>{
-          // console.log(cartItems)
-        return  price.deliveryType === selectedType &&
+      const filteredPricingArray = product.cartItem.pricing.filter((price) => {
+        // console.log(cartItems)
+        return (
+          price.deliveryType === selectedType &&
           price.service === product.service.type &&
-          price.emirate_id === cartItems[0]?.emirateId}
-      );
+          price.emirate_id === cartItems[0]?.emirateId
+        );
+      });
 
       // Check if any pricing options are found
       if (filteredPricingArray.length > 0) {
@@ -49,7 +55,7 @@ const DeliveryTypeBtn = () => {
 
       // ==================
 
-      pickupDate = new Date()
+      pickupDate = new Date();
     });
   }, [selectedType]);
 
@@ -58,19 +64,30 @@ const DeliveryTypeBtn = () => {
       {deliveryTypes.map((item, index) => (
         <Pressable
           key={item.deliveryTypeID}
-          style={[
+          style={({ pressed }) => [
             styles.button,
+            { opacity: pressed ? 0.7 : null },
             index === 0 && styles.leftButtonRadius, // Apply the leftButtonRadius style to the first button
             index === deliveryTypes.length - 1 && styles.rightButtonRadius, // Apply the rightButtonRadius style to the last button
             selectedType === item.deliveryTypeID && styles.selectedButton, // Apply the selectedButton style if selectedType matches the current deliveryTypeID
           ]}
           onPress={() => {
             setSelectedType(item.deliveryTypeID);
-          }}>
-          <Text style={[
-            styles.text,
-            { color: selectedType === item.deliveryTypeID ? ColorPalate.white : ColorPalate.themeprimary }
-          ]}>{item.delivery_type}</Text>
+          }}
+        >
+          <Text
+            style={[
+              styles.text,
+              {
+                color:
+                  selectedType === item.deliveryTypeID
+                    ? ColorPalate.white
+                    : ColorPalate.themeprimary,
+              },
+            ]}
+          >
+            {item.delivery_type}
+          </Text>
         </Pressable>
       ))}
     </View>

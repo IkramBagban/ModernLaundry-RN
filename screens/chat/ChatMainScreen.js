@@ -66,6 +66,9 @@ const ChatMainScreen = ({ navigation }) => {
         renderItem={({ item }) => {
           return (
             <Pressable
+            style={({ pressed }) => [
+              { opacity: pressed ? 0.7 : 1 },
+            ]}
               onPress={() => {
                 const recipient = item._id;
                 contactClickHandler(
@@ -90,9 +93,9 @@ const ChatMainScreen = ({ navigation }) => {
                     fontFamily: MyFonts.fontbold,
                   }}
                 >
-                  {item?.first_name || "Guest"}
+                  {item?.first_name + " " + item?.last_name || "Guest"}
                 </Text>
-                <Text>{item?.email}</Text>
+                <Text style={{color : ColorPalate.dgrey}}>{item?.email}</Text>
               </View>
             </Pressable>
           );

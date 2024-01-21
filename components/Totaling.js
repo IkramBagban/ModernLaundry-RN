@@ -38,8 +38,9 @@ export const Totaling = ({ navigateTo, detailRoute }) => {
       <View style={[styles.nextBTNContainer]}>
         <Pressable
           disabled={isDisabled}
-          style={[
+          style={({pressed}) =>[
             styles.nextButton,
+            {opacity : pressed ? 0.7: 1},
             isDisabled && { backgroundColor: ColorPalate.dgrey, opacity: 0.8, width: "100%"  },
           ]}
           onPress={() => navigation.navigate(navigateTo, detailRoute)}

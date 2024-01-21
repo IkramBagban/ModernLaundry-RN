@@ -325,7 +325,11 @@ const AdminChat = ({ route }) => {
         />
         {/* <Input style={styles.chatInput} /> */}
         <View style={styles.sendIconContainer}>
-          <Pressable onPress={sendMessageHandler}>
+          <Pressable onPress={sendMessageHandler}
+          style={({ pressed }) => [
+            { opacity: pressed ? 0.7 : 1 },
+          ]}
+          >
             <MaterialIcons
               name="send"
               color={ColorPalate.themeprimary}

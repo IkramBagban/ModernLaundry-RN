@@ -1,11 +1,5 @@
-import {
-  View,
-  Text,
-  Pressable,
-  ActivityIndicator,
-  Alert,
-} from "react-native";
-import React, {  useContext, useEffect, useState } from "react";
+import { View, Text, Pressable, ActivityIndicator, Alert } from "react-native";
+import React, { useContext, useEffect, useState } from "react";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { StyleSheet } from "react-native";
 import { ColorPalate, MyFonts } from "../../constants/var";
@@ -23,7 +17,7 @@ const ProfileScreen = () => {
 
   const dispatch = useDispatch();
   const authCntx = useContext(AuthContext);
-  
+
   const currentCustomer = useSelector(
     (state) => state?.filteredData?.currentCustomerData
   );
@@ -55,12 +49,15 @@ const ProfileScreen = () => {
 
   const logoutHandler = () => {
     Alert.alert("Logout", "Do you want to logout?", [
-      {text : "Cancel", onPress : ()=>{}},
-      {text : "Logout", onPress : ()=>{
-        authCntx.logout();
-        dispatch(emptyProducts());
-        hideMessage();
-      }},
+      { text: "Cancel", onPress: () => {} },
+      {
+        text: "Logout",
+        onPress: () => {
+          authCntx.logout();
+          dispatch(emptyProducts());
+          hideMessage();
+        },
+      },
     ]);
     // showMessage({
     //   message: "Click me to Logout",
@@ -91,7 +88,10 @@ const ProfileScreen = () => {
               <Text style={styles.nameText}>
                 {currentCustomer?.first_name} {currentCustomer?.last_name}
               </Text>
-              <Pressable onPress={() => navigation.navigate("UpdateProfile")}>
+              <Pressable
+                onPress={() => navigation.navigate("UpdateProfile")}
+                style={({ pressed }) => [{ opacity: pressed ? 0.7 : 1 }]}
+              >
                 <Text style={styles.editText}>
                   <MaterialIcons
                     name="edit"
@@ -139,7 +139,10 @@ const ProfileScreen = () => {
             />
           </Text>
 
-          <Pressable onPress={savedAdress}>
+          <Pressable
+            onPress={savedAdress}
+            style={({ pressed }) => [{ opacity: pressed ? 0.7 : 1 }]}
+          >
             <Text style={styles.addressText}>Saved Address</Text>
           </Pressable>
         </View>
@@ -152,7 +155,10 @@ const ProfileScreen = () => {
               color={ColorPalate.themeprimary}
             />
           </Text>
-          <Pressable onPress={termsConditions}>
+          <Pressable
+            onPress={termsConditions}
+            style={({ pressed }) => [{ opacity: pressed ? 0.7 : 1 }]}
+          >
             <Text style={styles.addressText}>Terms and Conditions</Text>
           </Pressable>
         </View>
@@ -165,7 +171,10 @@ const ProfileScreen = () => {
               color={ColorPalate.themeprimary}
             />
           </Text>
-          <Pressable onPress={supprtHandler}>
+          <Pressable
+            onPress={supprtHandler}
+            style={({ pressed }) => [{ opacity: pressed ? 0.7 : 1 }]}
+          >
             <Text style={styles.supportText}>Support</Text>
           </Pressable>
         </View>
@@ -174,7 +183,10 @@ const ProfileScreen = () => {
           <Text style={styles.iconText}>
             <MaterialIcons name="exit-to-app" size={18} color={"red"} />
           </Text>
-          <Pressable onPress={logoutHandler}>
+          <Pressable
+            onPress={logoutHandler}
+            style={({ pressed }) => [{ opacity: pressed ? 0.7 : 1 }]}
+          >
             <Text style={styles.logoutText}>Logout</Text>
           </Pressable>
         </View>
@@ -183,6 +195,7 @@ const ProfileScreen = () => {
       <View style={styles.footerContainer}>
         <Text style={styles.footerTextPart1}>Developed by</Text>
         <Pressable
+          style={({ pressed }) => [{ opacity: pressed ? 0.7 : 1 }]}
           // onPress={() => handleLinkPress("https://iqratechnology.com/")}
           onPress={() => {
             showMessage({

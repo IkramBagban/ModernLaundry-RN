@@ -1,12 +1,6 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  FlatList,
-  StyleSheet,
-  Text,
-  Pressable,
-  View,
-} from "react-native";
+import { FlatList, StyleSheet, Text, Pressable, View } from "react-native";
 
 import Toast from "react-native-toast-message";
 
@@ -20,10 +14,7 @@ import {
 } from "../../store/redux/reduxToolkit/cartSlice";
 
 import { postOrder } from "../../utils/api";
-import {
-  confirmationAlert,
-  formatDate,
-} from "../../utils/helperFunctions";
+import { confirmationAlert, formatDate } from "../../utils/helperFunctions";
 
 import { ColorPalate, MyFonts } from "../../constants/var";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
@@ -53,7 +44,7 @@ const CartOld = ({ navigation, route }) => {
 
   const dispatch = useDispatch();
   const { pickupDateString, deliveryDateString, notes } = route.params;
-  
+
   const customerId = useCustomerId();
   const cartItems = useSelector(selectAllCartItems);
   const totalPrice = useSelector(selectCartTotalPrice);
@@ -83,7 +74,7 @@ const CartOld = ({ navigation, route }) => {
 
   // Function to handle quantity update
   const handleUpdateQuantity = async (item, action) => {
-    console.log('product',item)
+    console.log("product", item);
 
     if (
       item &&
@@ -157,7 +148,7 @@ const CartOld = ({ navigation, route }) => {
           // service: services.find(
           //   (service) => service.service === item.service.type
           // ),
-          service : item.service.type,
+          service: item.service.type,
           DELIVERY: item.delivery.type,
           qty: item.quantity.toString(),
           Price: item.service.price.toString(),
@@ -187,40 +178,35 @@ const CartOld = ({ navigation, route }) => {
         () => console.log("Cancel Pressed"),
         async () => {
           try {
-            if (!customerId) return  console.log('authorization failed.');
-              const response = await postOrder(data);
-              console.log("response", response.status);
-              if (response.status === 201) {
-                navigation.navigate("Thanks", {
-                  data,
-                  emirate: currentCustomer?.rate_code,
-                });
+            if (!customerId) return console.log("authorization failed.");
+            const response = await postOrder(data);
+            console.log("response", response.status);
+            if (response.status === 201) {
+              navigation.navigate("Thanks", {
+                data,
+                emirate: currentCustomer?.rate_code,
+              });
 
-                showMessage({
-                  message: "Order Confirmed",
-                  description: "Your Order Has Been Confirmed",
-                  icon: () => (
-                    <MaterialIcons
-                      name="check-circle"
-                      size={24}
-                      color="white"
-                    />
-                  ),
-                  type: "success",
-                });
+              showMessage({
+                message: "Order Confirmed",
+                description: "Your Order Has Been Confirmed",
+                icon: () => (
+                  <MaterialIcons name="check-circle" size={24} color="white" />
+                ),
+                type: "success",
+              });
 
-                dispatch(emptyProducts());
-              } else {
-                showMessage({
-                  message: "Order Failed",
-                  description: "Your Order Has Been Failed",
-                  icon: () => (
-                    <MaterialIcons name="error" size={24} color="white" />
-                  ),
-                  type: "danger",
-                });
-              }
-            
+              dispatch(emptyProducts());
+            } else {
+              showMessage({
+                message: "Order Failed",
+                description: "Your Order Has Been Failed",
+                icon: () => (
+                  <MaterialIcons name="error" size={24} color="white" />
+                ),
+                type: "danger",
+              });
+            }
           } catch (e) {
             showMessage({
               message: "Order Failed",
@@ -262,7 +248,7 @@ const CartOld = ({ navigation, route }) => {
               <View style={styles.quantityContainer}>
                 <Pressable
                   onPress={() => handleUpdateQuantity(item, "decrease")}
-                  style={styles.quantityButton}
+                  style={({pressed}) => [styles.quantityButton,{ opacity : pressed ? 0.7: null}]}
                   activeOpacity={0.7}
                 >
                   <Text style={styles.quantityButtonText}>-</Text>
@@ -270,7 +256,10 @@ const CartOld = ({ navigation, route }) => {
 
                 <Pressable
                   onPress={() => handleUpdateQuantity(item, "increase")}
-                  style={styles.quantityButton}
+                  style={({ pressed }) => [
+                    styles.quantityButton,
+                    { opacity: pressed ? 0.7 : null },
+                  ]}
                   activeOpacity={0.7}
                 >
                   <Text style={styles.quantityButtonText}>+</Text>
@@ -284,7 +273,10 @@ const CartOld = ({ navigation, route }) => {
 
             <Pressable
               onPress={() => handleDeleteItem(item.id)}
-              style={styles.deleteButton}
+              style={({ pressed }) => [
+                styles.deleteButton,
+                { opacity: pressed ? 0.7 : null },
+              ]}
               activeOpacity={0.7}
             >
               <Text>
@@ -388,7 +380,7 @@ const CartOld = ({ navigation, route }) => {
                   {currentCustomer?.rate_code}
                 </Text>
               </View>
-
+              {/* 
               <View style={[styles.reviewTextsContainer, { flexWrap: "wrap" }]}>
                 <Text
                   style={[
@@ -399,9 +391,6 @@ const CartOld = ({ navigation, route }) => {
                   {" "}
                   address{" : "}
                 </Text>
-                {/* <Text style={styles.reviewOrderTexts}>
-                {currentCustomer?.address}
-              </Text>  */}
                 <Text style={styles.reviewOrderTexts}>
                   {currentCustomer?.apartment &&
                     currentCustomer?.apartment + " "}
@@ -410,7 +399,7 @@ const CartOld = ({ navigation, route }) => {
                   {currentCustomer?.area && currentCustomer?.area + ", "}
                   {currentCustomer?.rate_code}
                 </Text>
-              </View>
+              </View> */}
 
               <View style={styles.reviewTextsContainer}>
                 <Text
@@ -443,7 +432,10 @@ const CartOld = ({ navigation, route }) => {
       />
 
       <View style={[styles.totalContainer, { marginTop: 10 }]}>
-        <Pressable onPress={confirmOrder}>
+        <Pressable
+          onPress={confirmOrder}
+          style={({ pressed }) => [{ opacity: pressed ? 0.7 : null }]}
+        >
           <Text style={styles.totalText}>Confirm Order</Text>
         </Pressable>
       </View>

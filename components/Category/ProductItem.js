@@ -28,6 +28,7 @@ const deliveryType = "1";
 const delivery = [{ title: "Folded" }, { title: "Hanger" }];
 
 const ProductItem = React.memo(({ product, index, selectedEmirate }) => {
+  // console.log('selected emirate =======> ', selectedEmirate)
   const cartItemPrice = useSelector((state) =>
     selectItemTotalPrice(state, product.id)
   );
@@ -48,14 +49,15 @@ const ProductItem = React.memo(({ product, index, selectedEmirate }) => {
   const [emirateId, setEmirateId] = useState(null);
   const [filtered, setFiltered] = useState([]);
 
-  const [isCartBtnSelected, setIsCartBtnSelected] = useState(cartItem?.quantity < 1 ? false : true);
+  const [isCartBtnSelected, setIsCartBtnSelected] = useState(
+    cartItem?.quantity < 1 ? false : true
+  );
 
   // const customerId = useCustomerId();
   const currentCustomer = useSelector(
     (state) => state.filteredData.currentCustomerData
   );
   const dispatch = useDispatch();
-
 
   useEffect(() => {
     // filter selected emirate and set its id to filter product price.
@@ -136,7 +138,7 @@ const ProductItem = React.memo(({ product, index, selectedEmirate }) => {
 
   // Increase the quantity of the selected service
   function increaseQtyHandler() {
-    console.log('cartitem id', cartItem?.id)
+    console.log("cartitem id", cartItem?.id);
     // Check if both service and delivery are selected
     if (!selectedService.type || !selectedDelivery.type) {
       // Alert.alert("Please select a service and delivery");
@@ -240,8 +242,11 @@ const ProductItem = React.memo(({ product, index, selectedEmirate }) => {
           <View style={styles.qntyBtnContainer}>
             <Pressable
               onPress={decreaseQtyHandler}
-              activeOpacity={0.7}
-              style={styles.quantityBtn}
+              // activeOpacity={0.7}
+              style={({ pressed }) => [
+                styles.quantityBtn,
+                pressed ? styles.stylePress : null,
+              ]}
             >
               <Text style={[styles.quantityBtnText]}>-</Text>
             </Pressable>
@@ -257,7 +262,10 @@ const ProductItem = React.memo(({ product, index, selectedEmirate }) => {
             <Pressable
               onPress={increaseQtyHandler}
               activeOpacity={0.7}
-              style={styles.quantityBtn}
+              style={({ pressed }) => [
+                styles.quantityBtn,
+                pressed ? styles.stylePress : null,
+              ]}
             >
               <Text style={styles.quantityBtnText}>+</Text>
             </Pressable>
@@ -302,9 +310,11 @@ const ProductItem = React.memo(({ product, index, selectedEmirate }) => {
                   return (
                     <Pressable
                       onPress={() => serviceButtonHandler(item.item)}
-                      activeOpacity={0.7}
-                      style={[
+                      // activeOpacity={0.7}
+
+                      style={({ pressed }) => [
                         styles.slection,
+                        pressed ? styles.stylePress : null,
                         {
                           backgroundColor:
                             selectedService.type == item.item.service &&
@@ -357,8 +367,9 @@ const ProductItem = React.memo(({ product, index, selectedEmirate }) => {
                       // key={idx}
                       onPress={() => deliveryButtonHandler(item.item)}
                       activeOpacity={0.7}
-                      style={[
+                      style={({ pressed }) => [
                         styles.slection,
+                        pressed ? styles.stylePress : null,
                         {
                           backgroundColor:
                             selectedDelivery.type == item.item.title &&
@@ -445,33 +456,18 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
   },
+  stylePress: {
+    opacity: 0.75,
+  },
   quantityBtn: {
-    // width: 27,
-    // height: 25,
-    // // flex:1/2,
-    // // width:40,
-    // color: ColorPalate.white,
-    // backgroundColor: ColorPalate.themesecondary,
-    // // paddingVertical: 0,
-    // // paddingHorizontal: 2,
-    // borderRadius: 5,
-    // alignItems: "center",
-    // justifyContent: "center",
-
     backgroundColor: ColorPalate.themesecondary,
-    // paddingHorizontal:10,
-    // paddingVertical:5,
     paddingHorizontal: 7,
     borderRadius: 5,
   },
   quantityBtnText: {
-    // textAlign: "center",
     fontSize: 20,
-    // // fontWeight: "100",
     fontFamily: MyFonts.fontmid,
     color: ColorPalate.white,
-    // marginBottom:8,
-    // paddingHorizontal:8
   },
   contentitems: {
     color: ColorPalate.white,

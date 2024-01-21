@@ -63,11 +63,14 @@ const OrderScreen = ({ navigation }) => {
           <View style={styles.container}>
             {filteredOrder && filteredOrder.length > 0 ? (
               filteredOrder.map((order) => {
-                console.log(order)
+                console.log(order);
                 return (
                   <View key={order._id} style={styles.orderTypeContainer}>
                     <Pressable
-                      activeOpacity={0.6}
+                      // activeOpacity={0.6}
+                      style={({ pressed }) => [
+                        { opacity: pressed ? 0.7 : null },
+                      ]}
                       onPress={() =>
                         navigation.navigate("OrderDetails", { order })
                       }
@@ -166,7 +169,7 @@ const OrderScreen = ({ navigation }) => {
                             }
                           </Text>
                         </View>
-{/* 
+                        {/* 
                         <View style={styles.orderTextContainer}>
                           <Text
                             style={[styles.orderText, styles.orderNumberText]}

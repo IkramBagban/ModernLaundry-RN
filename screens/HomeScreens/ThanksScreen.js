@@ -107,14 +107,27 @@ const ThanksScreen = ({ navigation, route }) => {
 
             <View style={styles.cardBorder} />
             <Pressable
-              style={{ alignSelf: "center" }}
+              style={({ pressed }) => [
+                {
+                  alignSelf: "center",
+                  opacity: pressed ? 0.7 : 1,
+                },
+              ]}
               onPress={goToHomeHandler}
             >
               <Text style={{ color: ColorPalate.themeprimary }}>
                 Go To Home
               </Text>
             </Pressable>
-            <Pressable style={styles.button} onPress={viewOrderHandler}>
+            <Pressable
+              style={({ pressed }) => [
+                styles.button,
+                {
+                  opacity: pressed ? 0.7 : 1,
+                },
+              ]}
+              onPress={viewOrderHandler}
+            >
               <Text style={styles.buttonText}>View Orders</Text>
             </Pressable>
           </View>

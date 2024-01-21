@@ -56,8 +56,8 @@ function AuthForm({ isLogin, onSubmit, credentialsInvalid }) {
     }
     fetchEmirates();
     fetchArea();
-    console.log('emirates', emirates)
-    console.log('emirates', apiArea)
+    console.log("emirates", emirates);
+    console.log("emirates", apiArea);
 
     console.log("selectedArea", selectedArea);
   }, [selectedArea, selectedEmirate]);
@@ -72,7 +72,7 @@ function AuthForm({ isLogin, onSubmit, credentialsInvalid }) {
     email: emailIsInvalid,
     password: passwordIsInvalid,
     alter_Contact_Number: alternativeContactNumbetIsInvalid,
-    confirmPassword: confirmPasswordIsInvalid
+    confirmPassword: confirmPasswordIsInvalid,
   } = credentialsInvalid;
 
   function updateInputValueHandler(inputType, enteredValue) {
@@ -105,10 +105,10 @@ function AuthForm({ isLogin, onSubmit, credentialsInvalid }) {
         setEnteredEmail(enteredValue);
         break;
       case "password":
-        setEnteredPassword(enteredValue);  
+        setEnteredPassword(enteredValue);
         break;
       case "confirmPassword":
-        setEnteredConfirmPassword(enteredValue); 
+        setEnteredConfirmPassword(enteredValue);
         break;
     }
   }
@@ -138,19 +138,19 @@ function AuthForm({ isLogin, onSubmit, credentialsInvalid }) {
       alter_Contact_Number: enteredAlternativeContactNumber,
       email: enteredEmail,
       Password: enteredPassword,
-      confirmPassword : EnteredConfirmPassword
+      confirmPassword: EnteredConfirmPassword,
     };
-    console.log('confirm password auth form ',)
+    console.log("confirm password auth form ");
     onSubmit(data);
   }
-const navigation = useNavigation()
+  const navigation = useNavigation();
 
-  const forgotPasswordHandler = ()=>{
-  navigation.navigate("Email")
-  }
+  const forgotPasswordHandler = () => {
+    navigation.navigate("Email");
+  };
   return (
     <View>
-      <View style={{ height: isLogin ? 400: 450 }}>
+      <View style={{ height: isLogin ? 400 : 450 }}>
         <ScrollView>
           {!isLogin && (
             <>
@@ -160,7 +160,7 @@ const navigation = useNavigation()
                 value={enteredFirstName}
                 keyboardType="default"
                 isInvalid={firstNameIsValid}
-              />  
+              />
               <Input
                 label="Last Name"
                 onUpdateValue={updateInputValueHandler.bind(this, "lastName")}
@@ -232,35 +232,58 @@ const navigation = useNavigation()
             </>
           )}
           <>
-          <Input
-            label="Email Address"
-            onUpdateValue={updateInputValueHandler.bind(this, "email")}
-            value={enteredEmail}
-            keyboardType="email-address"
-            isInvalid={emailIsInvalid}
-            inputMode="email"
-          />
-          <Input
-            label="Password"
-            onUpdateValue={updateInputValueHandler.bind(this, "password")}
-            secure
-            value={enteredPassword}
-            isInvalid={passwordIsInvalid}
-            returnKeyType="go"
+            <Input
+              label="Email Address"
+              onUpdateValue={updateInputValueHandler.bind(this, "email")}
+              value={enteredEmail}
+              keyboardType="email-address"
+              isInvalid={emailIsInvalid}
+              inputMode="email"
             />
-       {  !isLogin && <Input
-            label="Confirm Password"
-            onUpdateValue={updateInputValueHandler.bind(this, "confirmPassword")}
-            secure
-            value={EnteredConfirmPassword}
-            isInvalid={confirmPasswordIsInvalid}
-            />}
-        { isLogin && (<View>
-            <Pressable onPress={forgotPasswordHandler}>
-              <Text style={{color:ColorPalate.dgrey,fontFamily:MyFonts.fontregular, marginLeft:3,marginTop:4}}>Forgot Password</Text>
-            </Pressable>
-          </View>)}
-            </>
+            <Input
+              label="Password"
+              onUpdateValue={updateInputValueHandler.bind(this, "password")}
+              secure
+              value={enteredPassword}
+              isInvalid={passwordIsInvalid}
+              returnKeyType="go"
+            />
+            {!isLogin && (
+              <Input
+                label="Confirm Password"
+                onUpdateValue={updateInputValueHandler.bind(
+                  this,
+                  "confirmPassword"
+                )}
+                secure
+                value={EnteredConfirmPassword}
+                isInvalid={confirmPasswordIsInvalid}
+              />
+            )}
+            {isLogin && (
+              <View>
+                <Pressable
+                  onPress={forgotPasswordHandler}
+                  style={({ pressed }) => [
+                    {
+                      opacity: pressed ? 0.7 : 1,
+                    },
+                  ]}
+                >
+                  <Text
+                    style={{
+                      color: ColorPalate.dgrey,
+                      fontFamily: MyFonts.fontregular,
+                      marginLeft: 3,
+                      marginTop: 4,
+                    }}
+                  >
+                    Forgot Password
+                  </Text>
+                </Pressable>
+              </View>
+            )}
+          </>
         </ScrollView>
       </View>
       <View style={styles.buttons}>
