@@ -26,7 +26,7 @@ const SignIn = ({ navigation }) => {
 
   // Handle the login process
   const handleLogin = async ({ email, Password }) => {
-    console.log("loginn: " + email, Password);
+    // console.log("loginn: " + email, Password);
 
     // Get customer data
     const customerData = await getCustomers();
@@ -45,7 +45,6 @@ const SignIn = ({ navigation }) => {
         return;
       }
       // Find the user based on the provided email and password
-      console.log(email + " => " + typeof Password);
       const user = customerData.data.find(
         (c) =>
           c.email.toLowerCase() === email &&

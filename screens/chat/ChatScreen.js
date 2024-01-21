@@ -12,7 +12,7 @@ import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import { ColorPalate, MyFonts } from "../../constants/var";
 import Input from "../../components/Auth/Input";
 import { useSelector } from "react-redux";
-import io from 'socket.io-client';
+import io from "socket.io-client";
 import { API_URL } from "../../config";
 import axios from "axios";
 import useMessages from "../../components/customHooks/useMessages";
@@ -179,45 +179,36 @@ const ChatScreen = () => {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
   const [socket, setSocket] = useState(null);
-  const [senderId, setsenderId] = useState(currentCustomer?._id );
+  const [senderId, setsenderId] = useState(currentCustomer?._id);
 
   // 'ikrambagban471@gmail.com
   const [recipient, setRecipient] = useState("65a66a02247e626af832b320");
   const [name, setName] = useState(currentCustomer?.first_name);
 
-      const [msges, isLoading] = useMessages();
-
-    useEffect(() => {
-    setMessages(msges)
-    }, [msges]);
-
-
+  const [msges, isLoading] = useMessages();
 
   useEffect(() => {
-    // Initialize socket connection
+    setMessages(msges);
+  }, [msges]);
+
+  useEffect(() => {
     const newSocket = io(API_URL);
     setSocket(newSocket);
 
-    // Event listeners
     newSocket.on("message_received", (newMessage) => {
       setMessages((prevMessages) => [...prevMessages, newMessage]);
     });
 
-    // Clean up on component unmount
     return () => {
       newSocket.disconnect();
     };
   }, []);
 
-  // Fetch user details from localStorage inside useEffect to avoid null values
   useEffect(() => {
     if (socket && senderId) {
-      // Register the user with their customer ID
       socket.emit("register_user", senderId);
     }
-
-    // Add other socket.emit or socket.on events here as needed
-  }, [socket]); // Dependency array ensures this effect runs when socket is set
+  }, [socket]);
 
   const sendMessageHandler = () => {
     if (socket) {
@@ -255,7 +246,9 @@ const ChatScreen = () => {
                     styles.userMessage,
                     {
                       alignSelf:
-                        item.senderId === currentCustomer?._id ? "flex-end" : "flex-start",
+                        item.senderId === currentCustomer?._id
+                          ? "flex-end"
+                          : "flex-start",
                     },
                   ]}
                 >
@@ -290,10 +283,9 @@ const ChatScreen = () => {
         />
         {/* <Input style={styles.chatInput} /> */}
         <View style={styles.sendIconContainer}>
-          <Pressable onPress={sendMessageHandler}
-          style={({ pressed }) => [
-            { opacity: pressed ? 0.7 : 1 },
-          ]}
+          <Pressable
+            onPress={sendMessageHandler}
+            style={({ pressed }) => [{ opacity: pressed ? 0.7 : 1 }]}
           >
             <MaterialIcons
               name="send"
