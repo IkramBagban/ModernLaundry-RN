@@ -197,13 +197,6 @@ const AdminChat = ({ route }) => {
   const [isLoading, setIsLoading] = useState(true);
 
   const conversation = useSelector(getAllConversation);
-  // const conversation = useSelector(state=> state.chat.conversation)
-  // const conversation= useSelector(state=> state.chat.conversation)
-  console.log("`````````````````````````````````````````````````````````````");
-  console.log("`````````````````````````````````````````````````````````````");
-  console.log("conversation", conversation);
-  console.log("`````````````````````````````````````````````````````````````");
-  console.log("ENDDDDDDD``````````````````````````");
 
   useEffect(() => {
   
@@ -225,6 +218,7 @@ const AdminChat = ({ route }) => {
 
     // Event listeners
     newSocket.on("message_received", (newMessage) => {
+      console.log('recived', newMessage)
       setMessages((prevMessages) => [...prevMessages, newMessage]);
     });
 
@@ -272,19 +266,9 @@ const AdminChat = ({ route }) => {
       </View>
     );
   }
-  //   if (messages.length < 1) {
-  //     return (
-  //       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-  //         <Text>No message Found.</Text>
-  //       </View>
-  //     );
-  //   }
+
   return (
     <View style={{ height: "100%", backgroundColor: ColorPalate.lgrey }}>
-      {/* <View style={styles.supportTextContainer}>
-          <Text style={styles.supportText}>support</Text>
-        </View> */}
-      <Text style={{ color: "black" }}>{rname}</Text>
       <View style={styles.messagesContainer}>
         {messages.length < 1 ? (
           <View

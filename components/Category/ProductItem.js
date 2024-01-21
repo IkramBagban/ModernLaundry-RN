@@ -28,7 +28,6 @@ const deliveryType = "1";
 const delivery = [{ title: "Folded" }, { title: "Hanger" }];
 
 const ProductItem = React.memo(({ product, index, selectedEmirate }) => {
-  // console.log('selected emirate =======> ', selectedEmirate)
   const cartItemPrice = useSelector((state) =>
     selectItemTotalPrice(state, product.id)
   );

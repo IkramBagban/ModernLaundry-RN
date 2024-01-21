@@ -22,41 +22,28 @@ const ChatMainScreen = ({ navigation }) => {
   const currentCustomer = useSelector(
     (state) => state?.filteredData?.currentCustomerData
   );
+
   useEffect(() => {
-    console.log("messages not fetched");
     if (!msges) return;
-    console.log("messages fetched");
     dispatch(addAllConversationToStore(msges));
   }, [msges]);
+
   useEffect(() => {
-    if (!currentCustomer) {
-      // console.log("customer or accounts not fetch yet.");
-      return;
-    }
+    if (!currentCustomer) return;
+
     if (currentCustomer?.email !== "ikrambagban471@gmail.com") {
       return navigation.replace("Chat");
     }
   }, [currentCustomer && currentCustomer.email]);
 
   useEffect(() => {
-    if (!accounts) {
-      return;
-      console.log("accounts not fetched.");
-    }
+    if (!accounts) return;
 
     const filtered = accounts.filter((a) => a.isStartedChatting);
     setFilteredAccounts(filtered);
   }, [isLoading]);
 
-  const contactClickHandler = (item, senderId, recipient, name, lastname) => {
-    // console.log('chats', item.chats);
-    // console.log(recipient);
-    // const filteredChats = item.chats.filter(
-    //   (chat) =>  (chat.senderId === senderId && chat.recipient === recipient) || (chat.senderId === recipient && chat.recipient === senderId)
-    // );
-
-    // console.log("filteredChats", filteredChats.length);
-
+  const contactClickHandler = (senderId, recipient, name, lastname) => {
     navigation.navigate("AdminChat", {
       senderId: senderId,
       recipient: recipient,
@@ -82,7 +69,6 @@ const ChatMainScreen = ({ navigation }) => {
               onPress={() => {
                 const recipient = item._id;
                 contactClickHandler(
-                  item,
                   currentCustomer?._id,
                   recipient,
                   item.first_name,
