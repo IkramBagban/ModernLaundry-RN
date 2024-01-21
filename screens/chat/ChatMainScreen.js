@@ -6,20 +6,31 @@ import {
   ActivityIndicator,
 } from "react-native";
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { ColorPalate, MyFonts } from "../../constants/var";
 import useFetch from "../../components/customHooks/useFetch";
+import { addAllConversationToStore } from "../../store/redux/reduxToolkit/chatSlice";
+import useMessages from "../../components/customHooks/useMessages";
 
 const ChatMainScreen = ({ navigation }) => {
   const [accounts, isLoading] = useFetch("/message/accounts");
   const [filteredAccounts, setFilteredAccounts] = useState(null);
+  const [msges] = useMessages();
+
+  const dispatch = useDispatch();
+
   const currentCustomer = useSelector(
     (state) => state?.filteredData?.currentCustomerData
   );
-
+  useEffect(() => {
+    console.log("messages not fetched");
+    if (!msges) return;
+    console.log("messages fetched");
+    dispatch(addAllConversationToStore(msges));
+  }, [msges]);
   useEffect(() => {
     if (!currentCustomer) {
-      console.log("customer or accounts not fetch yet.");
+      // console.log("customer or accounts not fetch yet.");
       return;
     }
     if (currentCustomer?.email !== "ikrambagban471@gmail.com") {
@@ -28,21 +39,23 @@ const ChatMainScreen = ({ navigation }) => {
   }, [currentCustomer && currentCustomer.email]);
 
   useEffect(() => {
-    console.log("second se effect");
     if (!accounts) {
-      return console.log("accounts not fetched.");
+      return;
+      console.log("accounts not fetched.");
     }
 
-    // console.log('accont fetched')
-    // console.log('in use effect')
     const filtered = accounts.filter((a) => a.isStartedChatting);
     setFilteredAccounts(filtered);
   }, [isLoading]);
-  console.log("isloadig " + isLoading);
 
-  const contactClickHandler = (senderId, recipient, name, lastname) => {
-    console.log(currentCustomer);
-    console.log(recipient);
+  const contactClickHandler = (item, senderId, recipient, name, lastname) => {
+    // console.log('chats', item.chats);
+    // console.log(recipient);
+    // const filteredChats = item.chats.filter(
+    //   (chat) =>  (chat.senderId === senderId && chat.recipient === recipient) || (chat.senderId === recipient && chat.recipient === senderId)
+    // );
+
+    // console.log("filteredChats", filteredChats.length);
 
     navigation.navigate("AdminChat", {
       senderId: senderId,
@@ -69,6 +82,7 @@ const ChatMainScreen = ({ navigation }) => {
               onPress={() => {
                 const recipient = item._id;
                 contactClickHandler(
+                  item,
                   currentCustomer?._id,
                   recipient,
                   item.first_name,

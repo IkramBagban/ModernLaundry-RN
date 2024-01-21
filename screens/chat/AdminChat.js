@@ -17,6 +17,10 @@ import io from "socket.io-client";
 import { API_URL } from "../../config";
 import axios from "axios";
 import useMessages from "../../components/customHooks/useMessages";
+import {
+  getAllConversation,
+  selectAllConversation,
+} from "../../store/redux/reduxToolkit/chatSlice";
 
 const messageData = [
   { _id: 1, message: "Hi there!", msgBy: "user", time: "3:00" },
@@ -186,26 +190,33 @@ const AdminChat = ({ route }) => {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
   const [socket, setSocket] = useState(null);
-//   const [senderId, setsenderId] = useState(currentCustomer?._id);
+  //   const [senderId, setsenderId] = useState(currentCustomer?._id);
   // const [recipient, setRecipient] = useState("65a3971a31488ce57038aebc");
   const [name, setName] = useState(currentCustomer?.first_name);
 
-  const [msges, isLoading] = useMessages();
+  const [isLoading, setIsLoading] = useState(true);
+
+  const conversation = useSelector(getAllConversation);
+  // const conversation = useSelector(state=> state.chat.conversation)
+  // const conversation= useSelector(state=> state.chat.conversation)
+  console.log("`````````````````````````````````````````````````````````````");
+  console.log("`````````````````````````````````````````````````````````````");
+  console.log("conversation", conversation);
+  console.log("`````````````````````````````````````````````````````````````");
+  console.log("ENDDDDDDD``````````````````````````");
 
   useEffect(() => {
-    if (!msges) return;
-
-    console.log("senderid", senderId);
-    console.log("recipient", recipient);
-    const chatWithRecipientUser = msges.filter(
+  
+    if (!conversation) return;
+    setIsLoading(false)
+    const chatWithRecipientUser = conversation.filter(
       (m) =>
         (m.senderId == senderId && m.recipient == recipient) ||
         (m.senderId == recipient && m.recipient == senderId)
     );
-    // console.log("chatwith", chatWithRecipientUser);
     setMessages(chatWithRecipientUser);
     // setMessages(msges);
-  }, [msges]);
+  }, [conversation]);
 
   useEffect(() => {
     // Initialize socket connection

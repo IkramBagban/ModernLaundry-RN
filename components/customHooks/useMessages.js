@@ -16,7 +16,7 @@ const useMessages = () => {
           const response = await axios.get(API_URL + "/message/" + customerId);
           const r = await axios.get(API_URL + "/message/accounts");
           //   console.log("response", response.data.data);
-          console.log("accounts", r.data);
+          // console.log("accounts", r.data);
           if (isActive) {
             setMessages(response.data.data);
           }

@@ -2,12 +2,14 @@ import { createStore, combineReducers,applyMiddleware  } from 'redux';
 import thunk from 'redux-thunk';
 import cartReducer from './reduxToolkit/cartSlice';
 import filteredDataSlice from './reduxToolkit/filteredDataSlice';
+import chatReducer from './reduxToolkit/chatSlice';
 
 
 const rootReducer = combineReducers({
   // products: productReducer,
   cart: cartReducer,
-  filteredData: filteredDataSlice
+  filteredData: filteredDataSlice,
+  chat : chatReducer
   
 });
 
