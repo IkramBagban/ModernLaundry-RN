@@ -9,10 +9,6 @@ export function useProducts() {
     const fetchData = async () => {
       try {
         const productsData = await getProducts();
-        console.log("productsData called : allProducts.js ");
-
-        // console.log('productsData. data',productsData.data)
-        // console.log('product data', productsData.data)
         setAllProducts(productsData);
       } catch (error) {
         console.error("Error fetching products:", error);
@@ -24,7 +20,7 @@ export function useProducts() {
     fetchData();
   }, []);
 
-  return { products, isLoading };
+  return [products, isLoading];
 }
 
 // import { useState, useEffect, useMemo } from 'react';

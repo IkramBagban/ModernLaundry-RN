@@ -15,8 +15,9 @@ const useFetch = (endpoint) => {
           const response = await axios.get(API_URL + endpoint);
           if (isActive) {
             setdata(response.data.data);
+            console.log('response.data', response.data)
           }
-        } catch (error) {
+        } catch (error) { 
           console.error(error);
         } finally {
           setIsLoading && setIsLoading(false);

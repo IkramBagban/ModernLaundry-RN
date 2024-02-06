@@ -67,13 +67,7 @@ const useCurrentUserOrders =()=>{
       async function fetchOrders() {
         // Call API to retrieve all orders
         try {
-            // const allOrders = await getOrders();
             const currentUserOrders = await getOrders(customerId);
-            // console.log('currentUserOrders', currentUserOrders.data)
-
-            // Filter orders to include only those for the current customer
-            // const currentUserOrders = allOrders?.data?.filter(o => o.customerID == customerId);
-            // console.log('')
             
             // Update state with filtered orders and set loading flag to false
             if (isActive) {
@@ -82,11 +76,7 @@ const useCurrentUserOrders =()=>{
             }
         } catch (e) {
             console.log('got asn errror while fetching order', e);
-            // setError(e);
         } 
-        // finally {
-            // setIsLoading(false);
-        // }
     }
     
     // If customer ID is available, fetch orders

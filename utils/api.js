@@ -1,5 +1,5 @@
 import axios from "axios";
-import { VERCEL_API_URL, API_URL, name } from "../config";
+import { VERCEL_API_URL, API_URL } from "../config";
 
 
 async function getCustomers() {
@@ -13,7 +13,6 @@ async function getCustomers() {
   }
 }
 async function getCustomer(customerId) {
-  console.log(name);
   try {
     const response = await axios.get(`${API_URL}/auth/customers/${customerId}`);
     return response.data;
@@ -25,9 +24,11 @@ async function getCustomer(customerId) {
 
 async function getProducts() {
   try {
-    const response = await axios.get(`${API_URL}`); // not working.
-    const data = response.data.data;
-    return data;
+    // const response = await axios.get(`${API_URL}/prod`); // not working.
+    const response = await axios.get(`https://lms-backend-bzpt.onrender.com/products`); // not working.
+    // const data = response;
+    console.log('data in api',response)
+    return response.data;
   } catch (error) {
     console.error(error);
     return e.response;

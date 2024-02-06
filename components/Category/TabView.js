@@ -56,27 +56,21 @@ const MyTabView = ({ selectedTime, selectedServiceId }) => {
   const [selectedEmirate, setSelectedEmirate] = useState();
   const [filteredProducts, setFilteredProducts] = useState([]);
 
-  const [isLoading , setIsLoading] = useState(true)
+  const [isLoading, setIsLoading] = useState(true);
+  // const [products, isLoading] =  useProducts()
 
   const dispatch = useDispatch();
 
-
-  // const { products, isLoading } = useProducts();
-  useEffect(()=>{
+  useEffect(() => {
     setTimeout(() => {
-      setIsLoading(false)
+      setIsLoading(false);
     }, 1000);
-  },[])
-  // let isLoading = false;
-  console.log("length of products : " , products.length)
+  }, []);
 
   const orders = useCurrentUserOrders();
   const emirates = useEmirates();
   const customerId = useCustomerId();
   const currentCustomer = useCurrentCustomer(customerId);
-
-  console.log(`customerId => (${customerId}) - selected emirate => (${selectedEmirate})`);
-  // console.log("selectedEmirate ==========> ", selectedEmirate);
 
   useEffect(() => {
     dispatch(setCurrentCustomerData(currentCustomer));
